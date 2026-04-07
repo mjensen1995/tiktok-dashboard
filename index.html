@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Stauding</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- VIDEO BAGGRUND -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="team1.mp4" type="video/mp4">
+  </video>
+
+  <!-- OVERLAY -->
+  <div class="overlay">
+    <div class="team">TEAM STAUDING</div>
+    <div class="title">TikTok Followers</div>
+
+    <div class="count" id="followers">---</div>
+    <div class="time" id="updated">Opdateret: --</div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    async function loadData() {
+      try {
+        const res = await fetch("data.json?_=" + Date.now());
+        const data = await res.json();
+
+        document.getElementById("followers").textContent =
+          Number(data.followers).toLocaleString("da-DK");
+
+        document.getElementById("updated").textContent =
+          "Opdateret: " + data.time;
+
+      } catch (err) {
+        console.error("FEJL:", err);
+        document.getElementById("followers").textContent = "INGEN DATA";
+      }
+    }
+
+    loadData();
+    setInterval(loadData, 60000);
+  </script>
+
+</body>
+</html>
