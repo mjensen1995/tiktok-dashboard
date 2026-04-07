@@ -1,3 +1,5 @@
+permissions:
+  contents: write
 name: Update Followers
 
 on:
@@ -20,9 +22,12 @@ jobs:
 
       - run: python tracker.py
 
-      - run: |
-          git config user.name "bot"
-          git config user.email "bot@github.com"
-          git add data.json
-          git commit -m "update followers" || echo "no change"
-          git push
+      - name: Commit & push
+  run: |
+    git config user.name "github-actions"
+    git config user.email "actions@github.com"
+    git add data.json
+    git commit -m "auto update" || echo "no changes"
+    git push
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
