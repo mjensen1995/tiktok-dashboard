@@ -27,9 +27,13 @@ except Exception as e:
     print("Fejl men fortsætter:", e)
 
 # ALDRIG STOP
+from datetime import datetime
+from zoneinfo import ZoneInfo  # NY
+
 data = {
     "followers": followers,
-    "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    "time": datetime.now(ZoneInfo("Europe/Copenhagen")).strftime("%Y-%m-%d %H:%M:%S")
+}
 }
 
 with open("data.json", "w") as f:
