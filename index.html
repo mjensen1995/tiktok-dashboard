@@ -2,48 +2,72 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Team Stauding</title>
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-family: Arial;
+    }
+
+    .team {
+      font-size: 60px;
+      font-weight: bold;
+      color: red;
+    }
+
+    .title {
+      font-size: 30px;
+      margin-top: 10px;
+    }
+
+    .count {
+      font-size: 100px;
+      margin-top: 40px;
+    }
+
+    .time {
+      margin-top: 10px;
+      opacity: 0.7;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- VIDEO BAGGRUND -->
-  <video class="bg-video" autoplay muted loop playsinline>
-    <source src="team1.mp4" type="video/mp4">
-  </video>
+<div class="team">TEAM STAUDING</div>
+<div class="title">TikTok Followers</div>
 
-  <!-- OVERLAY -->
-  <div class="overlay">
-    <div class="team">TEAM STAUDING</div>
-    <div class="title">TikTok Followers</div>
+<div class="count" id="followers">---</div>
+<div class="time" id="updated">---</div>
 
-    <div class="count" id="followers">---</div>
-    <div class="time" id="updated">Opdateret: --</div>
-  </div>
+<script>
+async function loadData() {
+  try {
+    const res = await fetch("https://cdn.jsdelivr.net/gh/mjensen1995/tiktok-dashboard/data.json?_=" + Date.now());
+    const data = await res.json();
 
-  <!-- SCRIPT -->
-  <script>
-    async function loadData() {
-      try {
-        const res = await fetch("https://cdn.jsdelivr.net/gh/mjensen1995/tiktok-dashboard/data.json?_=" + Date.now());
-        const data = await res.json();
+    document.getElementById("followers").textContent =
+      Number(data.followers).toLocaleString("da-DK");
 
-        document.getElementById("followers").textContent =
-          Number(data.followers).toLocaleString("da-DK");
+    document.getElementById("updated").textContent =
+      "Opdateret: " + data.time;
 
-        document.getElementById("updated").textContent =
-          "Opdateret: " + data.time;
+  } catch (err) {
+    console.error(err);
+    document.getElementById("followers").textContent = "FEJL";
+  }
+}
 
-      } catch (err) {
-        console.error("FEJL:", err);
-        document.getElementById("followers").textContent = "INGEN DATA";
-      }
-    }
-
-    loadData();
-    setInterval(loadData, 60000);
-  </script>
+loadData();
+setInterval(loadData, 60000);
+</script>
 
 </body>
 </html>
